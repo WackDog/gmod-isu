@@ -1,0 +1,21 @@
+{
+  "76561198000000001": [
+    {
+      "time": "2025-06-24 17:34:22",
+      "officer": "C17.CCA.04.UNION-412",
+      "notes": "Subject seen near Rebel checkpoint. Escaped pursuit."
+    },
+    {
+      "time": "2025-06-24 17:38:10",
+      "officer": "C17.CCA.04.UNION-412",
+      "notes": "Q: Why were you running? | A: I got scared and panicked."
+    }
+  ],
+  "76561198000000002": [
+    {
+      "time": "2025-06-23 19:00:00",
+      "officer": "C17.CCA.03.UNION-212",
+      "notes": "Flagged for association with known Anti-Citizen."
+    }
+  ]
+}
