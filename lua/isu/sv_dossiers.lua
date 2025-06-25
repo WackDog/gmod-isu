@@ -153,3 +153,46 @@ net.Receive("ISU_RequestExport", function(_, ply)
     file.CreateDir(ISU_Config.DataPath .. "logs/")
     file.Write(ISU_Config.DataPath .. "logs/" .. charID .. ".txt", table.concat(out, "\n"))
 end)
+
+
+-- Handle request for all dossier keys (SteamID and flag only)
+net.Receive("ISU_RequestAllDossierKeys", function(_, ply)
+    if not ISU_Config.CombineTeams[team.GetName(ply:Team())] then return end
+
+    local keys = {}
+    for k, v in pairs(ISU_Dossiers) do
+        table.insert(keys, {k, v._flag or "UNFLAGGED"})
+    end
+
+    net.Start("ISU_AllDossierKeys")
+    net.WriteTable(keys)
+    net.Send(ply)
+end)
+
+-- Handle export request with rank check
+net.Receive("ISU_RequestExport", function(_, ply)
+    local teamName = team.GetName(ply:Team())
+    local rank = ISU_Config.CombineRanks[teamName] or 0
+
+    -- Allow only higher-ranking users (e.g., 50+) to export
+    if rank < 50 then
+        ply:ChatPrint("[ISU] You do not have permission to export dossiers.")
+        return
+    end
+
+    local exportData = net.ReadTable()
+    local log = "[ISU EXPORT] Requested by " .. ply:Nick() .. " (" .. ply:SteamID() .. ")
+"
+    for _, row in ipairs(exportData) do
+        local sid, flag = row[1], row[2]
+        local meta = ISU_Dossiers[sid] and ISU_Dossiers[sid]._meta or {}
+        log = log .. string.format("SteamID: %s | Flag: %s | Faction: %s | Occupation: %s\n", sid, flag, meta.faction or "N/A", meta.occupation or "N/A")
+    end
+
+    -- Save to file with timestamp
+    local timestamp = os.date("%Y-%m-%d_%H-%M-%S")
+    file.CreateDir(ISU_Config.DataPath .. "exports")
+    file.Write(ISU_Config.DataPath .. "exports/export_" .. timestamp .. ".txt", log)
+
+    ply:ChatPrint("[ISU] Export saved to data/" .. ISU_Config.DataPath .. "exports/export_" .. timestamp .. ".txt")
+end)
