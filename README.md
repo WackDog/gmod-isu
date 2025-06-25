@@ -12,6 +12,7 @@ Designed to support factional control, persistent dossiers, and immersive interr
 - Admin-only flagging and metadata editing tools
 - Integrated dossier search and .txt export system
 - Full Combine-only access control with team config
+- Rank point based exports on dossiers
 - Optional in-world entity placement (Combine Terminal)
 
 ---
