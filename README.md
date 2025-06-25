@@ -110,9 +110,9 @@ Coming soon:
 
 - 🎛️ Cooperation meter during interrogations
 - 🔐 Clearance level restrictions for "Classified" dossiers
-- 📁 Better UI feedback, animations, and sound integration
+- 📁 Better UI feedback, animations, and sound integration ✅
 - 🗃️ MySQL backend support (optional)
-- 🗂️ Dossier grouping, filters, and rank-based exports
+- 🗂️ Dossier grouping, filters, and rank-based exports ✅
 
 ---
 
