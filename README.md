@@ -30,12 +30,11 @@ isu/
 │   │   ├── sh_config.lua
 │   │   ├── sv_dossiers.lua
 │   │   ├── sv_terminals.lua
-│
-├── entities/
-│   └── ent_isu_terminal/
-│       ├── init.lua
-│       ├── cl_init.lua
-│       └── shared.lua
+│   └── entities/
+│       └── ent_isu_terminal/
+│           ├── init.lua
+│           ├── cl_init.lua
+│           └── shared.lua
 │
 ├── data/
 │   └── isu/
