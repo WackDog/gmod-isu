@@ -2,6 +2,7 @@
 
 util.AddNetworkString("ISU_InterrogationSubmit")
 
+-- Submit Interrogation: adds Dossier to JSON
 net.Receive("ISU_InterrogationSubmit", function(_, ply)
     if not table.HasValue(ISU_Config.AdminRanks, ply:GetUserGroup()) then return end
 

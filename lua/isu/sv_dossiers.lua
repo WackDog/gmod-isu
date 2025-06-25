@@ -12,19 +12,23 @@ util.AddNetworkString("ISU_RequestExport")
 
 ISU_Dossiers = ISU_Dossiers or {}
 
+-- Save Dossiers to JSON file
 local function SaveDossiers()
     file.CreateDir(ISU_Config.DataPath)
     file.Write(ISU_Config.DataPath .. "dossiers.json", util.TableToJSON(ISU_Dossiers, true))
 end
 
+-- Load Dossiers from JSON file
 local function LoadDossiers()
     if file.Exists(ISU_Config.DataPath .. "dossiers.json", "DATA") then
         ISU_Dossiers = util.JSONToTable(file.Read(ISU_Config.DataPath .. "dossiers.json", "DATA")) or {}
     end
 end
 
+-- Hook for loading
 hook.Add("Initialize", "ISU_LoadDossiers", LoadDossiers)
 
+-- Broadcast flags for interrogation
 function ISU_BroadcastFlags()
     local flags = {}
     for charID, data in pairs(ISU_Dossiers) do
@@ -38,6 +42,7 @@ function ISU_BroadcastFlags()
     net.Broadcast()
 end
 
+-- Submit Dossier to team
 net.Receive("ISU_SubmitDossier", function(_, ply)
     local teamName = team.GetName(ply:Team())
     if not ISU_Config.CombineTeams[teamName] then return end
@@ -56,6 +61,7 @@ net.Receive("ISU_SubmitDossier", function(_, ply)
     SaveDossiers()
 end)
 
+-- Request Dossier
 net.Receive("ISU_RequestDossier", function(_, ply)
     local teamName = team.GetName(ply:Team())
     if not ISU_Config.CombineTeams[teamName] then return end
@@ -68,6 +74,7 @@ net.Receive("ISU_RequestDossier", function(_, ply)
     net.Send(ply)
 end)
 
+-- Change a players flag from the terminal
 net.Receive("ISU_UpdateFlag", function(_, ply)
     local teamName = team.GetName(ply:Team())
     if not ISU_Config.CombineTeams[teamName] then return end
@@ -88,6 +95,7 @@ net.Receive("ISU_UpdateFlag", function(_, ply)
         os.date() .. " - " .. ply:Nick() .. " set flag for " .. charID .. ": " .. newFlag .. "\n")
 end)
 
+-- Add Metadata to dossier for Admin purposes
 net.Receive("ISU_SubmitMetadata", function(_, ply)
     local teamName = team.GetName(ply:Team())
     if not ISU_Config.CombineTeams[teamName] then return end
@@ -110,6 +118,7 @@ net.Receive("ISU_SubmitMetadata", function(_, ply)
         os.date() .. " - " .. ply:Nick() .. " updated metadata for " .. charID .. "\n")
 end)
 
+-- Dossier specific requesting
 net.Receive("ISU_RequestAllDossierKeys", function(_, ply)
     local teamName = team.GetName(ply:Team())
     if not ISU_Config.CombineTeams[teamName] then return end
@@ -127,6 +136,7 @@ net.Receive("ISU_RequestAllDossierKeys", function(_, ply)
     net.Send(ply)
 end)
 
+-- Request export to logs
 net.Receive("ISU_RequestExport", function(_, ply)
     local teamName = team.GetName(ply:Team())
     if not ISU_Config.CombineTeams[teamName] then return end
@@ -181,8 +191,7 @@ net.Receive("ISU_RequestExport", function(_, ply)
     end
 
     local exportData = net.ReadTable()
-    local log = "[ISU EXPORT] Requested by " .. ply:Nick() .. " (" .. ply:SteamID() .. ")
-"
+    local log = "[ISU EXPORT] Requested by " .. ply:Nick() .. " (" .. ply:SteamID() .. ")\n"
     for _, row in ipairs(exportData) do
         local sid, flag = row[1], row[2]
         local meta = ISU_Dossiers[sid] and ISU_Dossiers[sid]._meta or {}

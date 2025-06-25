@@ -10,6 +10,7 @@ net.Receive("ISU_SyncFlags", function()
     flaggedPlayers = net.ReadTable() or {}
 end)
 
+-- Hook for Surveillance Overlay on HUD
 hook.Add("HUDPaint", "ISU_SurveillanceOverlay", function()
     local ply = LocalPlayer()
     if not ISU_Config.CombineTeams[team.GetName(ply:Team())] then return end
@@ -26,6 +27,7 @@ hook.Add("HUDPaint", "ISU_SurveillanceOverlay", function()
         return
     end
 
+    -- Colour based text based on tag
     local steamID = target:SteamID64()
     local flag = flaggedPlayers[steamID] or "UNFLAGGED"
     local color = Color(200, 200, 200)
@@ -45,6 +47,7 @@ hook.Add("HUDPaint", "ISU_SurveillanceOverlay", function()
 
     alpha = math.min(alpha + fadeSpeed, 255)
 
+    -- Fade in for HUD
     surface.SetAlphaMultiplier(alpha / 255)
     draw.SimpleTextOutlined("SUBJECT: " .. target:Nick(), "DermaLarge", ScrW()/2, ScrH()*0.25, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
     draw.SimpleTextOutlined("FLAG: " .. flag, "Trebuchet24", ScrW()/2, ScrH()*0.25 + 40, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)

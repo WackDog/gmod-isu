@@ -1,5 +1,6 @@
 -- cl_dossier_browser.lua
 
+-- Search dossier by name or SteamID
 net.Receive("ISU_AllDossierKeys", function()
     local keys = net.ReadTable()
 
@@ -61,6 +62,7 @@ net.Receive("ISU_AllDossierKeys", function()
         frame:Close()
     end
 
+    -- Export dossier on request
     exportBtn.DoClick = function()
         local exportData = {}
         for _, line in ipairs(list:GetLines()) do

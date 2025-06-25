@@ -1,5 +1,6 @@
 -- cl_menu.lua
 
+-- Net Receiver for opening Dossier
 net.Receive("ISU_OpenDossier", function()
     local dossiers = net.ReadTable()
     local frame = vgui.Create("DFrame")
